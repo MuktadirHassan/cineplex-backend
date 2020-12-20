@@ -3,7 +3,7 @@ const Bookings = require('../models/Bookings');
 const route = require('express').Router();
 const verify = require('./auth');
 
-route.post('/', verify ,async (req, res) => {
+route.post('/' ,async (req, res) => {
     const bookings = new Bookings({
         movieTitle: req.body.movieTitle,
         movieId:req.body.movieId,
@@ -21,11 +21,13 @@ route.post('/', verify ,async (req, res) => {
         res.send(err);
     }
 })
-route.get('/:query',async (req, res) => {
-    const id = req.params.query;
-    
+route.get('/:id/:date/:time',async (req, res) => {
+    const id = req.params.id;
+    const date = req.params.date;
+    const time = req.params.time;
+    console.log(id, date, time)
     try {
-        const booking = await Bookings.find({movieId:id});
+        const booking = await Bookings.find({movieId:id , date: date, time: time});
         res.json(booking);
     } catch (err) {
         res.send(err);
